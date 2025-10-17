@@ -1,5 +1,6 @@
 #!/bin/sh
 srcname="ASSEMBLY"
+
 start_dosbox="./files/dosbox.app/Contents/MacOS/DOSBox"
 modded_s=$(echo "$2" | sed 's/\(.*\)\..*/\1/')
 clear
@@ -16,8 +17,18 @@ if [[ "$1" == "-r" || "$1" == "-d" ]]; then
             $start_dosbox -c "@echo off" -c "MOUNT C ." -c "C:" -c "SET PATH=C:\files\GAS\BIN;%PATH%" -c "SET DJGPP=C:\files\GAS\DJGPP.ENV" -c "cls" -c "$srcname.EXE" -c "echo." -c "pause" -c "exit" 1>/dev/null 2>&1
         else
             # Debug
-            $start_dosbox  -c "@echo off" -c "MOUNT C ." -c "C:" -c "SET PATH=C:\files\GAS\BIN;%PATH%" -c "SET DJGPP=C:\files\GAS\DJGPP.ENV" -c "cls" -c "gdb -x .\files\GAS\gdbstart $srcname.EXE" -c "exit" 1>/dev/null 2>&1
-        fi
+            
+            $start_dosbox  \
+  -c "@echo off" \
+  -c "MOUNT C ." \
+  -c "C:" \
+  -c "keyb it" \
+  -c "SET PATH=C:\files\GAS\BIN;%PATH%" \
+  -c "SET DJGPP=C:\files\GAS\DJGPP.ENV" \
+  -c "cls" \
+  -c "gdb -x .\files\GAS\gdbstart $srcname.EXE" \
+  -c "exit" 1>/dev/null 2>&1
+  fi
         rm -f ./$srcname.EXE 1>/dev/null 2>&1
         rm -f ./C*.LD ./C*.SWP ./C*.LE ./C*.O ./C*.C 1>/dev/null 2>&1
         clear
